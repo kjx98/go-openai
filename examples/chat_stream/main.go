@@ -37,11 +37,13 @@ var platforms = map[string]platFormType{
 }
 
 func main() {
+	var bList bool
 	flag.StringVar(&platName, "plat", "", "platform name")
 	flag.StringVar(&apiKey, "apikey", "", "LLM API_KEY")
 	flag.StringVar(&modelName, "model", "", "LLM model name")
 	flag.StringVar(&baseUrl, "baseURI", "", "openai API baseURI")
 	flag.BoolVar(&bVerbose, "v", false, "verbose log")
+	flag.BoolVar(&bList, "list", false, "list models")
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "usage: auction [options]\n")
 		flag.PrintDefaults()
@@ -79,6 +81,19 @@ func main() {
 		cfg.BaseURL = baseUrl
 	}
 	client := openai.NewClientWithConfig(cfg)
+	if bList {
+		modelList, err := client.ListModels(context.Background())
+		if err != nil {
+			fmt.Println("ListModels error:", err)
+			return
+		}
+		for _, modelA := range modelList.Models {
+			fmt.Printf("%s (%s) created %d owner(%s) Window(%d)\n",
+				modelA.ID, modelA.Object, modelA.CreatedAt,
+				modelA.OwnedBy, modelA.ContextWindow)
+		}
+		return
+	}
 
 	req := openai.ChatCompletionRequest{
 		Model: modelName,

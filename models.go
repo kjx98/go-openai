@@ -7,14 +7,17 @@ import (
 )
 
 // Model struct represents an OpenAPI model.
+//
+//	ContextWindow for groq models
 type Model struct {
-	CreatedAt  int64        `json:"created"`
-	ID         string       `json:"id"`
-	Object     string       `json:"object"`
-	OwnedBy    string       `json:"owned_by"`
-	Permission []Permission `json:"permission"`
-	Root       string       `json:"root"`
-	Parent     string       `json:"parent"`
+	CreatedAt     int64        `json:"created"`
+	ID            string       `json:"id"`
+	Object        string       `json:"object"`
+	OwnedBy       string       `json:"owned_by"`
+	Permission    []Permission `json:"permission"`
+	Root          string       `json:"root"`
+	Parent        string       `json:"parent"`
+	ContextWindow int          `json:"context_window"`
 
 	httpHeader
 }
