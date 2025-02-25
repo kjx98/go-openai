@@ -34,12 +34,12 @@ var platforms = map[string]platFormType{
 	"gemini": {"https://generativelanguage.googleapis.com/v1beta/openai",
 		"gemini-2.0-flash-thinking-exp", "GEMINI_API_KEY"},
 	"siliconflow": {"https://api.siliconflow.cn/v1", "deepseek-ai/DeepSeek-R1", "SILICON_API_KEY"},
-	"deepseek":    {"https://api.deepseek.com/v1", "deepseek-reasoner", "DP_API_KEY"},
+	"deepseek":    {"https://api.deepseek.com/v1", "deepseek-reasoner", "DEEPSEEK_API_KEY"},
 }
 
 func main() {
 	var bList bool
-	flag.StringVar(&platName, "plat", "", "platform name")
+	flag.StringVar(&platName, "plat", "aliyun", "platform name")
 	flag.StringVar(&apiKey, "apikey", "", "LLM API_KEY")
 	flag.StringVar(&modelName, "model", "", "LLM model name")
 	flag.StringVar(&baseUrl, "baseURI", "", "openai API baseURI")
@@ -54,9 +54,9 @@ func main() {
 
 	apiKeyEnv := "LLM_API_KEY"
 	if platName == "" {
-		platName = "tencent"
-	}
-	{
+		fmt.Fprintf(os.Stderr, "no platform\n")
+		os.Exit(1)
+	} else {
 		if plat, ok := platforms[platName]; ok {
 			if baseUrl == "" {
 				baseUrl = plat.baseUrl
@@ -65,24 +65,18 @@ func main() {
 				modelName = plat.modelName
 			}
 			apiKeyEnv = plat.apiEnv
+			fmt.Printf("Using %s for API access\n", platName)
 		}
 	}
 	if apiKey == "" {
 		apiKey = os.Getenv(apiKeyEnv)
 	}
 	cfg := openai.DefaultConfig(apiKey)
-	if baseUrl == "" {
-		baseUrl = os.Getenv("LLM_BASE_URL")
-	}
 	if modelName == "" {
-		modelName = os.Getenv("LLM_MODEL")
-		if modelName == "" {
-			modelName = "deepseek-r1"
-		}
+		modelName = "deepseek-r1"
 	}
 	if baseUrl == "" {
-		//cfg.BaseURL = "https://api.deepseek.com/v1"
-		cfg.BaseURL = "https://api.lkeap.cloud.tencent.com/v1"
+		cfg.BaseURL = "https://api.deepseek.com/v1"
 	} else {
 		cfg.BaseURL = baseUrl
 	}
@@ -94,9 +88,8 @@ func main() {
 			return
 		}
 		for _, modelA := range modelList.Models {
-			fmt.Printf("%s (%s) created %d owner(%s) Window(%d)\n",
-				modelA.ID, modelA.Object, modelA.CreatedAt,
-				modelA.OwnedBy, modelA.ContextWindow)
+			fmt.Printf("%s (%s) created %d owner(%s)\n",
+				modelA.ID, modelA.Object, modelA.CreatedAt, modelA.OwnedBy)
 		}
 		return
 	}
