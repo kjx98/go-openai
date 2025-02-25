@@ -23,17 +23,18 @@ var (
 type platFormType struct {
 	baseUrl   string
 	modelName string
+	apiEnv    string
 }
 
 // "gemini-2.0-flash-thinking-exp-01-21"
 var platforms = map[string]platFormType{
-	"tencent": {"https://api.lkeap.cloud.tencent.com/v1", "deepseek-r1"},
-	"aliyun":  {"https://dashscope.aliyuncs.com/compatible-mode/v1", "deepseek-r1"},
-	"groq":    {"https://api.groq.com/openai/v1", "llama-3.3-70b-versatile"},
+	"tencent": {"https://api.lkeap.cloud.tencent.com/v1", "deepseek-r1", "QQ_API_KEY"},
+	"aliyun":  {"https://dashscope.aliyuncs.com/compatible-mode/v1", "deepseek-r1", "ALI_API_KEY"},
+	"groq":    {"https://api.groq.com/openai/v1", "llama-3.3-70b-versatile", "GROQ_API_KEY"},
 	"gemini": {"https://generativelanguage.googleapis.com/v1beta/openai",
-		"gemini-2.0-flash-thinking-exp"},
-	"siliconflow": {"https://api.siliconflow.cn/v1", "deepseek-ai/DeepSeek-R1"},
-	"deepseek":    {"https://api.deepseek.com/v1", "deepseek-reasoner"},
+		"gemini-2.0-flash-thinking-exp", "GEMINI_API_KEY"},
+	"siliconflow": {"https://api.siliconflow.cn/v1", "deepseek-ai/DeepSeek-R1", "SILICON_API_KEY"},
+	"deepseek":    {"https://api.deepseek.com/v1", "deepseek-reasoner", "DP_API_KEY"},
 }
 
 func main() {
@@ -51,7 +52,11 @@ func main() {
 	}
 	flag.Parse()
 
-	if platName != "" {
+	apiKeyEnv := "LLM_API_KEY"
+	if platName == "" {
+		platName = "tencent"
+	}
+	{
 		if plat, ok := platforms[platName]; ok {
 			if baseUrl == "" {
 				baseUrl = plat.baseUrl
@@ -59,10 +64,11 @@ func main() {
 			if modelName == "" {
 				modelName = plat.modelName
 			}
+			apiKeyEnv = plat.apiEnv
 		}
 	}
 	if apiKey == "" {
-		apiKey = os.Getenv("LLM_API_KEY")
+		apiKey = os.Getenv(apiKeyEnv)
 	}
 	cfg := openai.DefaultConfig(apiKey)
 	if baseUrl == "" {
