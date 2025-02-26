@@ -30,6 +30,7 @@ type platFormType struct {
 var platforms = map[string]platFormType{
 	"tencent": {"https://api.lkeap.cloud.tencent.com/v1", "deepseek-r1", "QQ_API_KEY"},
 	"aliyun":  {"https://dashscope.aliyuncs.com/compatible-mode/v1", "deepseek-r1", "ALI_API_KEY"},
+	"qwen":    {"https://dashscope.aliyuncs.com/compatible-mode/v1", "qwen-max", "ALI_API_KEY"},
 	"groq":    {"https://api.groq.com/openai/v1", "llama-3.3-70b-versatile", "GROQ_API_KEY"},
 	"gemini": {"https://generativelanguage.googleapis.com/v1beta/openai",
 		"gemini-2.0-flash-thinking-exp", "GEMINI_API_KEY"},
