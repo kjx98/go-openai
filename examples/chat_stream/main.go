@@ -36,6 +36,7 @@ var platforms = map[string]platFormType{
 		"gemini-2.0-flash-thinking-exp", "GEMINI_API_KEY"},
 	"siliconflow": {"https://api.siliconflow.cn/v1", "deepseek-ai/DeepSeek-R1", "SILICON_API_KEY"},
 	"deepseek":    {"https://api.deepseek.com/v1", "deepseek-reasoner", "DEEPSEEK_API_KEY"},
+	"openrouter":  {"https://openrouter.ai/api/v1", "deepseek/deepseek-r1:free", "OPENROUTER_API_KEY"},
 }
 
 func main() {
