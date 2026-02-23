@@ -21,6 +21,10 @@ func TestGetAzureDeploymentByModel(t *testing.T) {
 			Expect: "gpt-35-turbo-0301",
 		},
 		{
+			Model:  "gpt-4.1",
+			Expect: "gpt-4.1",
+		},
+		{
 			Model:  "text-embedding-ada-002",
 			Expect: "text-embedding-ada-002",
 		},
@@ -98,5 +102,26 @@ func TestDefaultAnthropicConfigWithEmptyValues(t *testing.T) {
 	expectedBaseURL := "https://api.anthropic.com/v1"
 	if config.BaseURL != expectedBaseURL {
 		t.Errorf("Expected BaseURL to be %v, got %v", expectedBaseURL, config.BaseURL)
+	}
+}
+
+func TestClientConfigString(t *testing.T) {
+	// String() should always return the constant value
+	conf := openai.DefaultConfig("dummy-token")
+	expected := "<OpenAI API ClientConfig>"
+	got := conf.String()
+	if got != expected {
+		t.Errorf("ClientConfig.String() = %q; want %q", got, expected)
+	}
+}
+
+func TestGetAzureDeploymentByModel_NoMapper(t *testing.T) {
+	// On a zero-value or DefaultConfig, AzureModelMapperFunc is nil,
+	// so GetAzureDeploymentByModel should just return the input model.
+	conf := openai.DefaultConfig("dummy-token")
+	model := "some-model"
+	got := conf.GetAzureDeploymentByModel(model)
+	if got != model {
+		t.Errorf("GetAzureDeploymentByModel(%q) = %q; want %q", model, got, model)
 	}
 }
