@@ -32,7 +32,7 @@ var platforms = map[string]platFormType{
 	"aliyun":  {"https://dashscope.aliyuncs.com/compatible-mode/v1", "deepseek-r1", "ALI_API_KEY"},
 	"qwen":    {"https://dashscope.aliyuncs.com/compatible-mode/v1", "qwen-max", "ALI_API_KEY"},
 	"groq":    {"https://api.groq.com/openai/v1", "llama-3.3-70b-versatile", "GROQ_API_KEY"},
-	"ollama":  {"https://ollama.com/", "qwen-3.5:cloud", "OLLAMA_API_KEY"},
+	"ollama":  {"https://ollama.com/v1", "qwen-3.5:cloud", "OLLAMA_API_KEY"},
 	"gemini": {"https://generativelanguage.googleapis.com/v1beta/openai",
 		"gemini-2.0-flash-thinking-exp", "GEMINI_API_KEY"},
 	"siliconflow": {"https://api.siliconflow.cn/v1", "deepseek-ai/DeepSeek-R1", "SILICON_API_KEY"},
